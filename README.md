@@ -53,7 +53,7 @@ Table with results
 Uses Vernier Graphical Analysis to fit the curve and to find the approximate value of constant **C**. 
 
 * Curve Fit for Heap Sort Data Set
-<img src='./Images/Constant_Approximation_Graph.png' title='Insertion Sort Curve Fit Graphical Analysis' width='' alt='Insertion Sort Curve Fit Graphical Analysis' />
+<img src='./Images/Constant_Approximation_Graph.PNG' title='Insertion Sort Curve Fit Graphical Analysis' width='' alt='Insertion Sort Curve Fit Graphical Analysis' />
 
 The *Heap Sort* curve fit uses the equation: 
 **C(x(log(x)))**, where **x** represents **N** and **C** is a constant.
