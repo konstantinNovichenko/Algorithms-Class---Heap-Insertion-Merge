@@ -26,34 +26,34 @@ Table with results
 ## Graphs
 
 * Sorted Array - Execution Time
-<img src='./Images/Graphs/1_sorted_execution_time.PNG' title='Sorted Array - Execution Time' width='' alt='Sorted Array - Execution Time' />
+<img src='./Images/Graphs/1_sorted_execution_time.png' title='Sorted Array - Execution Time' width='' alt='Sorted Array - Execution Time' />
 
 * Sorted Array - Steps
-<img src='./Images/Graphs/1_sorted_num_of_steps.PNG' title='Sorted Array - Steps' width='' alt='Sorted Array - Steps' />
+<img src='./Images/Graphs/1_sorted_num_of_steps.png' title='Sorted Array - Steps' width='' alt='Sorted Array - Steps' />
 
 * Reversed Array - Execution Time
-<img src='./Images/Graphs/2_reversed_execution_time.PNG' title='Reversed Array - Execution Time' width='' alt='Reversed Array - Execution Time' />
+<img src='./Images/Graphs/2_reversed_execution_time.png' title='Reversed Array - Execution Time' width='' alt='Reversed Array - Execution Time' />
 
 * Reversed Array - Steps
-<img src='./Images/Graphs/2_reversed_num_of_steps.PNG' title='Reversed Array - Steps' width='' alt='Reversed Array - Steps' />
+<img src='./Images/Graphs/2_reversed_num_of_steps.png' title='Reversed Array - Steps' width='' alt='Reversed Array - Steps' />
 
 * Random Permutation Array - Execution Time
-<img src='./Images/Graphs/3_random_sequence_execution_time.PNG' title='Random Permutation Array - Execution Time' width='' alt='Random Permutation Array - Execution Time' />
+<img src='./Images/Graphs/3_random_sequence_execution_time.png' title='Random Permutation Array - Execution Time' width='' alt='Random Permutation Array - Execution Time' />
 
 * Random Permutation Array - Steps
-<img src='./Images/Graphs/3_random_sequence_num_of_steps.PNG' title='Random Permutation Array - Steps' width='' alt='Random Permutation Array - Steps' />
+<img src='./Images/Graphs/3_random_sequence_num_of_steps.png' title='Random Permutation Array - Steps' width='' alt='Random Permutation Array - Steps' />
 
 * Average of 50 Instances of Random Numbers - Execution Time
-<img src='./Images/Graphs/4_random_50_execution_time.PNG' title='Average of 50 Instances of Random Numbers - Execution Time' width='' alt='Average of 50 Instances of Random Numbers - Execution Time' />
+<img src='./Images/Graphs/4_random_50_execution_time.png' title='Average of 50 Instances of Random Numbers - Execution Time' width='' alt='Average of 50 Instances of Random Numbers - Execution Time' />
 
 * Average of 50 Instances of Random Numbers - Steps
-<img src='./Images/Graphs/4_random_50_num_of_steps.PNG' title='Average of 50 Instances of Random Numbers - Steps' width='' alt='Average of 50 Instances of Random Numbers - Steps' />
+<img src='./Images/Graphs/4_random_50_num_of_steps.png' title='Average of 50 Instances of Random Numbers - Steps' width='' alt='Average of 50 Instances of Random Numbers - Steps' />
 
 ## Graphical Analysis of Data Sets
 Uses Vernier Graphical Analysis to fit the curve and to find the approximate value of constant **C**. 
 
 * Curve Fit for Heap Sort Data Set
-<img src='./Images/Constant_Approximation_Graph.PNG' title='Insertion Sort Curve Fit Graphical Analysis' width='' alt='Insertion Sort Curve Fit Graphical Analysis' />
+<img src='./Images/Constant_Approximation_Graph.png' title='Insertion Sort Curve Fit Graphical Analysis' width='' alt='Insertion Sort Curve Fit Graphical Analysis' />
 
 The *Heap Sort* curve fit uses the equation: 
 **C(x(log(x)))**, where **x** represents **N** and **C** is a constant.
