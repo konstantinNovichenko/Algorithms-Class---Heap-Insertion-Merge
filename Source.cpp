@@ -22,7 +22,6 @@ Author: Konstantin Novichenko
 #include <stdlib.h>
 #include <iomanip>
 #include <fstream>
-//#include "heap.h"
 
 using std::cout;
 
@@ -204,12 +203,10 @@ void sortArraysOfSizeN(int n, std::ofstream& outFile)
 
 	cout << std::setfill('-') << std::setw(100) << "-"  << std::setfill(' ') << std::endl; // Formating lines	
 	
-	//printArray(alreadySortedArray, n);
 	start = std::chrono::steady_clock::now(); // Set timer
 	heapSort(alreadySortedArray, n - 1, counter); // Insertion Sort
 	end = std::chrono::steady_clock::now();	// Stop timer
-	//printArray(alreadySortedArray, n);
-
+	
 	// Output
 	cout << "\nSORTED SEQUENCE ARRAY (N = " << n << ")\n\n";
 	cout << std::setw(30) << "HEAP SORT " << std::setw(19)<< "\n";
@@ -226,12 +223,10 @@ void sortArraysOfSizeN(int n, std::ofstream& outFile)
 
 	// ***************************************Reversed Array***********************************************
 
-	//printArray(reversedArray, n);
 	start = std::chrono::steady_clock::now(); // Set timer
 	heapSort(reversedArray, n - 1, counter); // Insertion Sort
 	end = std::chrono::steady_clock::now(); // Stop timer
-	//printArray(reversedArray, n);
-
+	
 	//Output
 	cout << "\n\nREVERSED SEQUENCE ARRAY (N = " << n << ")\n\n";
 	cout << std::setw(30) << "HEAP SORT " << std::setw(19) << "\n";
@@ -248,13 +243,11 @@ void sortArraysOfSizeN(int n, std::ofstream& outFile)
 	counter = 0;
 
 	// ***************************************Random Permutations Array***********************************************
-
-	//printArray(randomArray, n);
+	
 	start = std::chrono::steady_clock::now(); // Set timer
 	heapSort(randomArray, n - 1, counter); // Insertion Sort
 	end = std::chrono::steady_clock::now(); // Stop timer
-	//printArray(randomArray, n);
-
+	
 	// Output
 	cout << "\n\nRANDOM ITERATIONS SEQUENCE ARRAY (N = " << n << ")\n\n";
 	cout << std::setw(30) << "HEAP SORT " << std::setw(19) << "\n";
@@ -281,13 +274,10 @@ void sortArraysOfSizeN(int n, std::ofstream& outFile)
 			randomArray[j] = randomNumberTemp;
 		}		
 
-		//printArray(randomArray, n);
 		start = std::chrono::steady_clock::now(); // Set timer
 		heapSort(randomArray, n - 1, counter); // Insertion Sort
 		end = std::chrono::steady_clock::now(); // Stop timer
-		//printArray(randomArray, n);
-
-
+		
 		// Increment the average values of time and steps for insertion sort, then reset step counter
 		averageTime += (long long)(std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count());
 		averageSteps += (long long)counter;
