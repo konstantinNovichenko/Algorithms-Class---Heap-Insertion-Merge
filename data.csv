@@ -1,0 +1,13 @@
+n,type,array_type,execution_time,num_of_steps
+100,quick,sorted,35100,41186
+100,random_quick,sorted,9800,5468
+100,quick,reversed,23800,28686
+100,random_quick,reversed,8700,5060
+100,quick,random_sequence,7900,4705
+100,random_quick,random_sequence,9400,4989
+100,quick,random_50,6502,4806
+100,random_quick,random_50,8332,5161
+100,heap,sorted,10700,7650
+100,heap,reversed,8600,6439
+100,heap,random_sequence,10500,7143
+100,heap,random_50,10208,7077

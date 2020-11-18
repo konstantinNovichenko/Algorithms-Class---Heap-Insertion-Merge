@@ -1,4 +1,4 @@
-# Testing Algorithms - *Heap Sort & Insertion Sort & Merge Sort*
+# Testing Algorithms - *Quick Sort & Randomized Quick Sort & Heap Sort & Insertion Sort & Merge Sort*
 
 This program was written for **CSC 382 Algorithms** class at **College of Staten Island (CUNY)**
 
@@ -6,7 +6,7 @@ Created by: **Konstantin Novichenko**
 
 ## Overview
 
-The program implements *Heap Sort*, *Insertion Sort*, and *Merge Sort Algorithms* and checks their efficiency for arrays of size **N = 100, 200, 300, 400, 500, 1000, 4000, 10000**
+The program implements *Quick Sort*, *Randomized Quick Sort*, *Heap Sort*, *Insertion Sort*, and *Merge Sort Algorithms* and checks their efficiency for arrays of size **N = 100, 200, 300, 400, 500, 1000, 4000, 10000**
 for the following test cases:
 * Sorted Array
 * Reversed Array
@@ -14,7 +14,7 @@ for the following test cases:
 * 50 Random Instances of 1 to N (calculates average)
 
 Efficiency is measured by execution time and the number of steps it took to sort the array.
-User see the results of the sorting in a table format. The program outputs the results in .CSV file which is used for the data analysis. The .CSV file is being processed in jupyter notebook python script using Pandas and Seaborn. You can check the python script [here](./Data_Analysis.ipynb). Some of the graphs show very subtle difference between Heap Sort and Merge Sort. You can see the graphs of the subset **N = 100 to 500** [here](./Images/Zoomed_In_Graphs_Up_to_500/)
+User see the results of the sorting in a table format. The program outputs the results in .CSV file which is used for the data analysis. The .CSV file is being processed in jupyter notebook python script using Pandas and Seaborn. You can check the python script [here](./Data_Analysis.ipynb). Some of the graphs show very subtle difference between different sorting algorithms for small values of N. You can see the graphs of the subset **N = 100 to 500** [here](./Images/Zoomed_In_Graphs_Up_to_500/)
 
 ## Sample Output
 
@@ -50,7 +50,7 @@ Table with results
 <img src='./Images/Graphs/4_random_50_num_of_steps.png' title='Average of 50 Instances of Random Numbers - Steps' width='' alt='Average of 50 Instances of Random Numbers - Steps' />
 
 ## Graphical Analysis of Data Sets
-Uses Vernier Graphical Analysis to fit the curve and to find the approximate value of constant **C**. 
+Uses Vernier Graphical Analysis to fit the curve and to find the approximate value of constant **C** for *Heap Sort*. 
 
 * Curve Fit for Heap Sort Data Set
 <img src='./Images/Constant_Approximation_Graph.PNG' title='Insertion Sort Curve Fit Graphical Analysis' width='' alt='Insertion Sort Curve Fit Graphical Analysis' />

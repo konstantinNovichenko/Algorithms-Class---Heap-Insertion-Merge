@@ -1,7 +1,7 @@
 /*
 This program was written for CSC 382 Algorithms class at College of Staten Island (CUNY)
 
-The program implements Heap Sort, Insertion Sort, and Merge Sort Algorithms and checks their efficiency for arrays of size N = 100, 200, 300, 400, 500, 1000, 4000, 10000
+The program implements QuickSort, Randomized QuickSort, Heap Sort, Insertion Sort, and Merge Sort Algorithms and checks their efficiency for arrays of size N = 100, 200, 300, 400, 500, 1000, 4000, 10000
 for the following test cases:
 	- Sorted Array
 	- Reversed Array
@@ -22,6 +22,7 @@ Author: Konstantin Novichenko
 #include <stdlib.h>
 #include <iomanip>
 #include <fstream>
+#include <vector>
 
 using std::cout;
 
@@ -36,6 +37,12 @@ void heapify(int A[],int i, int n, int& counter);
 void buildHeap(int A[], int n, int& counter);
 void heapSort(int A[], int n, int& counter);
 void swap(int& a, int& b, int& counter);
+void generateRandom(int A[], int n); 
+int getNum(std::vector<int>& v); 
+int partition(int A[], int l, int r, int& counter);
+void quickSort(int A[], int l, int r, int& counter);
+int randomizedPartition(int A[], int l, int r, int& counter);
+void randomizedQuickSort(int A[], int l, int r, int& counter);
 
 // Main function
 int main() 
@@ -49,7 +56,9 @@ int main()
 
 	// Call sorting for N = 100, 200, 300, 400, 500, 1000, 4000, 10000
 
-	// Heap Sort
+
+	// Quicksort, Randomized Quicksort, and Heap Sort
+	
 	sortArraysOfSizeN(100, outFile);
 	sortArraysOfSizeN(200, outFile);
 	sortArraysOfSizeN(300, outFile);
@@ -58,8 +67,9 @@ int main()
 	sortArraysOfSizeN(1000, outFile);
 	sortArraysOfSizeN(4000, outFile);
 	sortArraysOfSizeN(10000, outFile);
+	
 
-	// OLD - Insertion Sort and Merge Sort
+	// OLD - Insertion Sort and Merge Sort	
 	sortArraysOfSizeNOld(100, outFile);
 	sortArraysOfSizeNOld(200, outFile);
 	sortArraysOfSizeNOld(300, outFile);
@@ -69,10 +79,78 @@ int main()
 	sortArraysOfSizeNOld(4000, outFile);
 	sortArraysOfSizeNOld(10000, outFile);
 	
-	outFile.close(); // Stop the file stream
+
+	outFile.close(); // Stop the file stream	
+	
 
 	system("pause");
 	return 0;
+}
+
+// Conventional partition for QuickSort
+int partition(int A[], int l, int r, int& counter)
+{	
+	int pivot = A[r]; // get pivot value
+	int i = l - 1; // get the starting index
+
+	counter += 3;
+
+	for(int j = l; j < r; j++) // iterate through the array from left to right
+	{
+		if(A[j] <= pivot) // if value at j is less or equal to the value of pivot - swap the starting value with the value at j
+		{
+			i++;
+			swap(A[i], A[j], counter);
+			counter += 2;
+		}
+		counter += 3;		
+	}
+	counter++;
+
+	swap(A[i+1], A[r], counter); // swap the next value (at i+1) with the right most value
+
+	counter += 2;
+	return i+1;
+}
+
+// Conventional Quicksort
+void quickSort(int A[], int l, int r, int& counter)
+{	
+	int q;	// partition index
+	if(l < r) // if left index is lower than right index
+	{
+		q = partition(A, l, r, counter); // partition and get the partition index
+		quickSort(A, l, q - 1, counter); // quicksort left side
+		quickSort(A, q + 1, r, counter); // quicksort right side
+		counter += 3;
+	}
+
+	counter += 2;
+}
+
+
+// Randomized partition for Quicksort
+int randomizedPartition(int A[], int l, int r, int& counter)
+{
+	int index = rand() % (r - l + 1) + l; // get a random pivot
+	swap(A[index], A[r], counter); // swap the value at random pivot and the right-most value
+	counter += 3;
+	return partition(A, l, r, counter); // continue a regualr partition
+}
+
+// Randomized QuickSort. Using randomized partition
+void randomizedQuickSort(int A[], int l, int r, int& counter)
+{	
+	int q;	// partition index
+	if(l < r)
+	{
+		q = randomizedPartition(A, l, r, counter); // randomized partition and get the partition index
+		randomizedQuickSort(A, l, q - 1, counter); // quicksort left side
+		randomizedQuickSort(A, q + 1, r, counter); // quicksort right side
+		counter += 3;
+	}
+
+	counter += 2;
 }
 
 // Function that takes an array of size n and starting index and performs heapify operation for heap sort algorithm
@@ -80,20 +158,20 @@ void heapify(int A[],int i, int n, int& counter)
 {
 	int child; // Index of the child node
 
-	if(2*i <= n) // if index x 2 less than the size 
+	if(2*i + 1 <= n) // if index x 2 less than the size 
 	{
-		child = 2*i; // Set child to index x 2
+		child = 2*i + 1; // Set child to index x 2
 
-		if(2*i + 1 <= n) // If next index is less than n
+		if(2*i + 2 <= n) // If next index is less than n
 		{
-			if(A[2*i] > A[2*i + 1]) //If value of at index x 2 if greater than the next one
+			if(A[2*i + 1] > A[2*i + 2]) //If value of at index x 2 if greater than the next one
 			{
-				child = 2*i; // Set child to index x 2
+				child = 2*i + 1; // Set child to index x 2
 				counter ++;
 			}
 			else
 			{
-				child = 2*i + 1; // Set child to next from index x 2
+				child = 2*i + 2; // Set child to next from index x 2
 				counter++;
 			}
 			counter++;
@@ -145,6 +223,48 @@ void swap(int& a, int& b, int& counter)
 	counter += 3;
 }
 
+// Function that gets the random number from the vector
+int getNum(std::vector<int>& v) 
+{   
+    // Size of the vector 
+    int n = v.size();   
+  
+    // Make sure the number is within 
+    // the index range 
+    int index = rand() % n; 
+  
+    // Get random number from the vector 
+    int num = v[index]; 
+  
+    // Remove the number from the vector 
+	int t = v[index];
+	v[index] =  v[n - 1];
+	v[n - 1] = t;
+    v.pop_back(); 
+  
+    // Return the removed number 
+    return num; 
+} 
+  
+// Function to generate n non-repeating random numbers 
+void generateRandom(int A[], int n) 
+{ 
+    std::vector<int> v(n); 
+  
+    // Fill the vector with the values 
+    // 1, 2, 3, ..., n 
+    for (int i = 0; i < n; i++) 
+        v[i] = i + 1; 
+  
+    // While vector has elements 
+    // get a random number from the vector and insert it into the array
+	int index = 0;
+    while (v.size()) { 
+		A[index] = getNum(v); 
+        index++;
+    } 
+} 
+
 
 // Function that processes sorting for arrays of size N
 // Generates pairs of identical arrays which are being used in heap sort
@@ -156,6 +276,14 @@ void sortArraysOfSizeN(int n, std::ofstream& outFile)
 	int* reversedArray = new int[n];
 	int* randomArray = new int[n];
 
+	int* alreadySortedArrayQS = new int[n];
+	int* reversedArrayQS = new int[n];
+	int* randomArrayQS = new int[n];
+
+	int* alreadySortedArrayRQS = new int[n];
+	int* reversedArrayRQS = new int[n];
+	int* randomArrayRQS = new int[n];
+
 	// Inititalize time points
 	std::chrono::steady_clock::time_point start;
 	std::chrono::steady_clock::time_point end;
@@ -164,41 +292,213 @@ void sortArraysOfSizeN(int n, std::ofstream& outFile)
 	int counter = 0;
 
 	// Initialize average step and time counters (used for 50 random arrays)
-	long long averageTime = 0;
-	long long averageSteps = 0;
+	long long averageTimeQS = 0;
+	long long averageStepsQS = 0;
+	long long averageTimeRQS = 0;
+	long long averageStepsRQS = 0;
+	long long averageTimeHS = 0;
+	long long averageStepsHS = 0;
+
+	// Get random permutations for the first array
+	generateRandom(randomArray, n);
 
 	// Loops that generates Sorted, Reversed, Random Permunation of N arrays
 	for (int i = 0; i < n; i++)
 	{
 		// Sorted
 		alreadySortedArray[i] = i + 1;
+		alreadySortedArrayQS[i] = i + 1;
+		alreadySortedArrayRQS[i] = i + 1;
 
 		// Reversed
 		reversedArray[i] = n - i;
+		reversedArrayQS[i] = n - i;
+		reversedArrayRQS[i] = n - i;		
 
-		bool uniqueRandomNumber = false; // Used to check if the number is unique and should be included in array
-		int randNum = 0; // Temp value of the currebt random number
-
-		while (!uniqueRandomNumber) // Run until unique number is found
-		{
-			randNum = rand() % n + 1; // Get Random number
-			uniqueRandomNumber = true;
-			if (i != 0) // First number is unique, so skip the check
-			{
-				for (int j = 0; j < i; j++)
-				{
-					if (randNum == randomArray[j]) // If found, that means that number is not unique
-					{
-						uniqueRandomNumber = false; 
-					}
-				}
-			}
-		}
-
-		// Random permutations
-		randomArray[i] = randNum;
+		// Copy Random permutations from the original random array		
+		randomArrayQS[i] = randomArray[i];
+		randomArrayRQS[i] = randomArray[i];
 	}
 
+	
+
+	//***************************************************************************************************
+	// QUICKSORT and RANDOMIZED QUICKSORT
+	//***************************************************************************************************
+
+
+	// ***************************************Sorted Array***********************************************
+
+	cout << std::setfill('-') << std::setw(100) << "-"  << std::setfill(' ') << std::endl; // Formating lines	
+	
+	start = std::chrono::steady_clock::now(); // Set timer
+	quickSort(alreadySortedArrayQS, 0, n - 1, counter); //  QuickSort
+	end = std::chrono::steady_clock::now();	// Stop timer
+
+	// Output
+	cout << "\nSORTED SEQUENCE ARRAY (N = " << n << ")\n\n";
+	cout << std::setw(30) << "QUICKSORT " << std::setw(19) << "|"<< std::setw(34) << "RANDOMIZED QUICKSORT" << "\n";
+
+	cout << "Number of operations" << "\tExecution Time (ns)\t|" << "\tNumber of operations" << "\tExecution Time (ns) " << "\n";
+
+	cout << std::setw(20) << counter;
+	cout << " " << std::setw(22) << std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count() << "\t|\t";
+	
+	// Output results in .csv file
+	outFile << n << ",quick,sorted," << std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count() << ","<< counter <<"\n";
+
+	// Reset steps counter
+	counter = 0;	
+
+	
+	start = std::chrono::steady_clock::now(); // Set timer
+	randomizedQuickSort(alreadySortedArrayRQS, 0, n - 1, counter); // Randomized QuickSort
+	end = std::chrono::steady_clock::now(); // Stop timer
+	
+
+	// Output 
+	cout << std::setw(20) << counter;
+	cout << " " << std::setw(22) << std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count() << "\n";
+	
+	// Output results in .csv file
+	outFile << n << ",random_quick,sorted," << std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count() << ","<< counter <<"\n";
+
+	// Reset steps counter
+	counter = 0;
+
+	// ***************************************Reversed Array***********************************************
+
+	
+	start = std::chrono::steady_clock::now(); // Set timer
+	quickSort(reversedArrayQS, 0, n - 1, counter); // QuickSort
+	end = std::chrono::steady_clock::now(); // Stop timer
+
+	// Output
+	cout << "\n\nREVERSED SEQUENCE ARRAY (N = " << n << ")\n\n";
+	cout << std::setw(30) << "QUICKSORT " << std::setw(19) << "|"<< std::setw(34) << "RANDOMIZED QUICKSORT" << "\n";
+
+	cout << "Number of operations" << "\tExecution Time (ns)\t|" << "\tNumber of operations" << "\tExecution Time (ns) " << "\n";
+
+	cout << std::setw(20) << counter;
+	cout << " " << std::setw(22) << std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count() << "\t|\t";
+	
+	// Output results in .csv file
+	outFile << n << ",quick,reversed," << std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count() << ","<< counter <<"\n";
+	// Reset steps counter
+	counter = 0;
+
+	
+	start = std::chrono::steady_clock::now(); // Set timer
+	randomizedQuickSort(reversedArrayRQS, 0, n - 1, counter); // Randomized QuickSort
+	end = std::chrono::steady_clock::now(); // Stop timer
+	
+
+	// Output 
+	cout << std::setw(20) << counter;
+	cout << " " << std::setw(22) << std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count() << "\n";
+	
+	// Output results in .csv file
+	outFile << n << ",random_quick,reversed," << std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count() << ","<< counter <<"\n";
+	// Reset steps counter
+	counter = 0;
+
+	// ***************************************Random Permutations Array***********************************************
+	
+	start = std::chrono::steady_clock::now(); // Set timer
+	quickSort(randomArrayQS, 0, n - 1, counter); // QuickSort
+	end = std::chrono::steady_clock::now(); // Stop timer
+	
+
+	// Output
+	cout << "\n\nRANDOM ITERATIONS SEQUENCE ARRAY (N = " << n << ")\n\n";
+	cout << std::setw(30) << "QUICKSORT " << std::setw(19) << "|"<< std::setw(34) << "RANDOMIZED QUICKSORT" << "\n";
+
+	cout << "Number of operations" << "\tExecution Time (ns)\t|" << "\tNumber of operations" << "\tExecution Time (ns) " << "\n";
+
+	cout << std::setw(20) << counter;
+	cout << " " << std::setw(22) << std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count() << "\t|\t";
+	
+	// Output results in .csv file
+	outFile << n << ",quick,random_sequence," << std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count() << ","<< counter <<"\n";
+
+	// Reset steps counter
+	counter = 0;
+
+	
+	start = std::chrono::steady_clock::now(); // Set timer
+	randomizedQuickSort(randomArrayRQS, 0, n - 1, counter); // Randomized QuickSort
+	end = std::chrono::steady_clock::now(); // Stop timer
+	
+
+	// Output 
+	cout << std::setw(20) << counter;
+	cout << " " << std::setw(22) << std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count() << "\n";
+	
+	// Output results in .csv file
+	outFile << n << ",random_quick,random_sequence," << std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count() << ","<< counter <<"\n";
+
+	// Reset steps counter
+	counter = 0;
+
+	// ***************************************50 Random Instances***********************************************
+
+	for (int i = 0; i < 50; i++) // 50 pairs of random arrays
+	{
+		for (int j = 0; j < n; j++) // Populate the current pair with random numbers in range from 1 to N
+		{
+			int randomNumberTemp = rand() % n + 1;
+			randomArrayQS[j] = randomNumberTemp;
+			randomArrayRQS[j] = randomNumberTemp;
+		}		
+
+		
+		start = std::chrono::steady_clock::now(); // Set timer
+		quickSort(randomArrayQS, 0, n - 1, counter); // QuickSort
+		end = std::chrono::steady_clock::now(); // Stop timer
+		
+		
+		// Increment the average values of time and steps for insertion sort, then reset step counter
+		averageTimeQS += (long long)(std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count());
+		averageStepsQS += (long long)counter;
+		counter = 0;
+
+		
+		start = std::chrono::steady_clock::now(); // Set timer
+		randomizedQuickSort(randomArrayRQS, 0, n - 1, counter); // Randomized QuickSort
+		end = std::chrono::steady_clock::now(); // Stop timer
+		
+
+		// Increment the average values of time and steps for merge sort, then reset step counter
+		averageTimeRQS += (long long)(std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count());
+		averageStepsRQS += (long long)counter;
+		counter = 0;			
+	}
+
+
+	//Output 
+	cout << "\n\nAVERAGE OF 50 ARRAYS OF RANDOM NUMBERS (N = " << n << ")\n\n";
+	cout << std::setw(30) << "QUICKSORT " << std::setw(19) << "|"<< std::setw(34) << "RANDOMIZED QUICKSORT" << "\n";
+
+	cout << "Number of operations" << "\tExecution Time (ns)\t|" << "\tNumber of operations" << "\tExecution Time (ns) " << "\n";
+
+	cout << std::setw(20) << averageStepsQS/50;
+	cout << " " << std::setw(22) << averageTimeQS/50 << "\t|\t";
+	cout << std::setw(20) << averageStepsRQS / 50;
+	cout << " " << std::setw(22) << averageTimeRQS / 50 << "\n\n";
+
+	// Output results in .csv file
+	outFile << n << ",quick,random_50," << averageTimeQS/50 << ","<< averageStepsQS/50 <<"\n";
+	outFile << n << ",random_quick,random_50," << averageTimeRQS / 50 << ","<< averageStepsRQS / 50 <<"\n";
+
+
+	cout << std::setfill('-') << std::setw(100) << "-" << std::setfill(' ') << std::endl; // Formating lines
+
+
+
+	//***************************************************************************************************
+	// HEAP SORT
+	//***************************************************************************************************
+	
 	// ***************************************Sorted Array***********************************************
 
 	cout << std::setfill('-') << std::setw(100) << "-"  << std::setfill(' ') << std::endl; // Formating lines	
@@ -206,15 +506,6 @@ void sortArraysOfSizeN(int n, std::ofstream& outFile)
 	start = std::chrono::steady_clock::now(); // Set timer
 	heapSort(alreadySortedArray, n - 1, counter); // Insertion Sort
 	end = std::chrono::steady_clock::now();	// Stop timer
-	
-	// Output
-	cout << "\nSORTED SEQUENCE ARRAY (N = " << n << ")\n\n";
-	cout << std::setw(30) << "HEAP SORT " << std::setw(19)<< "\n";
-
-	cout << "Number of operations" << "\tExecution Time (ns)" << "\n";
-
-	cout << std::setw(20) << counter;
-	cout << " " << std::setw(22) << std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count();
 	
 	// Output results in .csv file
 	outFile << n << ",heap,sorted," << std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count() << ","<< counter <<"\n";
@@ -227,15 +518,6 @@ void sortArraysOfSizeN(int n, std::ofstream& outFile)
 	heapSort(reversedArray, n - 1, counter); // Insertion Sort
 	end = std::chrono::steady_clock::now(); // Stop timer
 	
-	//Output
-	cout << "\n\nREVERSED SEQUENCE ARRAY (N = " << n << ")\n\n";
-	cout << std::setw(30) << "HEAP SORT " << std::setw(19) << "\n";
-
-	cout << "Number of operations" << "\tExecution Time (ns)" << "\n";
-
-	cout << std::setw(20) << counter;
-	cout << " " << std::setw(22) << std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count();
-	
 	// Output results in .csv file
 	outFile << n << ",heap,reversed," << std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count() << ","<< counter <<"\n";
 
@@ -247,15 +529,6 @@ void sortArraysOfSizeN(int n, std::ofstream& outFile)
 	start = std::chrono::steady_clock::now(); // Set timer
 	heapSort(randomArray, n - 1, counter); // Insertion Sort
 	end = std::chrono::steady_clock::now(); // Stop timer
-	
-	// Output
-	cout << "\n\nRANDOM ITERATIONS SEQUENCE ARRAY (N = " << n << ")\n\n";
-	cout << std::setw(30) << "HEAP SORT " << std::setw(19) << "\n";
-
-	cout << "Number of operations" << "\tExecution Time (ns)" << "\n";
-
-	cout << std::setw(20) << counter;
-	cout << " " << std::setw(22) << std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count();
 	
 	// Output results in .csv file
 	outFile << n << ",heap,random_sequence," << std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count() << ","<< counter <<"\n";
@@ -279,34 +552,37 @@ void sortArraysOfSizeN(int n, std::ofstream& outFile)
 		end = std::chrono::steady_clock::now(); // Stop timer
 		
 		// Increment the average values of time and steps for insertion sort, then reset step counter
-		averageTime += (long long)(std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count());
-		averageSteps += (long long)counter;
+		averageTimeHS += (long long)(std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count());
+		averageStepsHS += (long long)counter;
 		counter = 0;			
 	}
-
-	// Output 
-	cout << "\n\nAVERAGE OF 50 ARRAYS OF RANDOM NUMBERS (N = " << n << ")\n\n";
-	cout << std::setw(30) << "HEAP SORT " << std::setw(19) << "\n";
-
-	cout << "Number of operations" << "\tExecution Time (ns)" << "\n";
-
-	cout << std::setw(20) << averageSteps/50;
-	cout << " " << std::setw(22) << averageTime/50 << "\n";
+	
 	
 	// Output results in .csv file
-	outFile << n << ",heap,random_50," << averageTime/50 << ","<< averageSteps/50 <<"\n";
+	outFile << n << ",heap,random_50," << averageTimeHS/50 << ","<< averageStepsHS/50 <<"\n";	
 
-
-	cout << std::setfill('-') << std::setw(50) << "-" << std::setfill(' ') << std::endl; // Formating lines	
 
 	// Release data from the main memory
 	delete[] reversedArray;
 	delete[] alreadySortedArray;
 	delete[] randomArray;
+	delete[] reversedArrayQS;
+	delete[] alreadySortedArrayQS;
+	delete[] randomArrayQS;
+	delete[] reversedArrayRQS;
+	delete[] alreadySortedArrayRQS;
+	delete[] randomArrayRQS;
+	
 
 	alreadySortedArray = nullptr;
 	reversedArray = nullptr;
 	randomArray = nullptr;
+	alreadySortedArrayQS = nullptr;
+	reversedArrayQS = nullptr;
+	randomArrayQS = nullptr;
+	alreadySortedArrayRQS = nullptr;
+	reversedArrayRQS = nullptr;
+	randomArrayRQS = nullptr;
 }
 
 //**********************************OLD FUNCTIONS BELOW***********************************************************
@@ -338,6 +614,9 @@ void sortArraysOfSizeNOld(int n, std::ofstream& outFile)
 	long long averageTime2 = 0;
 	long long averageSteps2 = 0;
 
+	// Generate random permutations array
+	generateRandom(randomArray1, n);
+
 	// Loops that generates Sorted, Reversed, Random Permunation of N arrays
 	for (int i = 0; i < n; i++)
 	{
@@ -347,30 +626,10 @@ void sortArraysOfSizeNOld(int n, std::ofstream& outFile)
 
 		// Reversed
 		reversedArray1[i] = n - i;
-		reversedArray2[i] = n - i;
+		reversedArray2[i] = n - i;		
 
-		bool uniqueRandomNumber = false; // Used to check if the number is unique and should be included in array
-		int randNum = 0; // Temp value of the currebt random number
-
-		while (!uniqueRandomNumber) // Run until unique number is found
-		{
-			randNum = rand() % n + 1; // Get Random number
-			uniqueRandomNumber = true;
-			if (i != 0) // First number is unique, so skip the check
-			{
-				for (int j = 0; j < i; j++)
-				{
-					if (randNum == randomArray1[j] || randNum == randomArray2[j]) // If found, that means that number is not unique
-					{
-						uniqueRandomNumber = false; 
-					}
-				}
-			}
-		}
-
-		// Random permutations
-		randomArray1[i] = randNum;
-		randomArray2[i] = randNum;
+		// Copy Random permutations from the original random array
+		randomArray2[i] = randomArray1[i];
 	}
 
 	// ***************************************Sorted Array***********************************************
